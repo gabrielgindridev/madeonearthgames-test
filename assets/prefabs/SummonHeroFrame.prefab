@@ -35,10 +35,13 @@
       },
       {
         "__id__": 22
+      },
+      {
+        "__id__": 24
       }
     ],
     "_prefab": {
-      "__id__": 24
+      "__id__": 41
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -473,6 +476,8 @@
       "__id__": 0
     },
     "fileId": "92dstnfLdBW6GNkFVl2UPN",
+    "instance": null,
+    "targetOverrides": null,
     "nestedPrefabInstanceRoots": null
   },
   {
@@ -549,6 +554,198 @@
     "fileId": "aczb6vmO5KxrDHK3whxd4N"
   },
   {
+    "__type__": "ca4e1ki52tHXJxB5xmgcJCo",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 25
+    },
+    "hero": null,
+    "rank": null,
+    "element": null,
+    "HeroSprites": [
+      {
+        "__id__": 26
+      },
+      {
+        "__id__": 27
+      },
+      {
+        "__id__": 28
+      },
+      {
+        "__id__": 29
+      },
+      {
+        "__id__": 30
+      },
+      {
+        "__id__": 31
+      }
+    ],
+    "RankSprites": [
+      {
+        "__id__": 32
+      },
+      {
+        "__id__": 33
+      },
+      {
+        "__id__": 34
+      },
+      {
+        "__id__": 35
+      },
+      {
+        "__id__": 36
+      }
+    ],
+    "ElementSprites": [
+      {
+        "__id__": 37
+      },
+      {
+        "__id__": 38
+      },
+      {
+        "__id__": 39
+      },
+      {
+        "__id__": 40
+      }
+    ],
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "d06wWDd0xLz6kCeTtwRHJs"
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "hero_1",
+    "Sprite": {
+      "__uuid__": "3500d9a3-e595-49c0-acc9-5d5de05d4249@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "hero_2",
+    "Sprite": {
+      "__uuid__": "ab29469a-6c60-4b4d-a4b1-55673833d8c2@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "hero_3",
+    "Sprite": {
+      "__uuid__": "70ffc48e-e155-4f87-a53b-ac552de530de@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "hero_4",
+    "Sprite": {
+      "__uuid__": "137e72e2-9551-4b64-b9d5-ca774d3acb23@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "hero_5",
+    "Sprite": {
+      "__uuid__": "ca3e08f9-81c7-4bb8-8d92-5ef3fbe12a0e@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "hero_6",
+    "Sprite": {
+      "__uuid__": "c0bde77d-334a-4921-b968-b86de9c11011@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "s",
+    "Sprite": {
+      "__uuid__": "9d971286-64a2-40eb-8332-69249e675df1@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "a",
+    "Sprite": {
+      "__uuid__": "30a1ee04-c1d8-4ae2-8cd2-c7ea2a4a5c00@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "b",
+    "Sprite": {
+      "__uuid__": "fe8b397d-358e-419c-9a9a-8c8c7ff375bd@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "c",
+    "Sprite": {
+      "__uuid__": "35257d07-f97a-4f45-aebc-21de25bea8c8@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "d",
+    "Sprite": {
+      "__uuid__": "4ea3886f-e326-4375-8abd-039aff629673@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "earth",
+    "Sprite": {
+      "__uuid__": "bc7df230-2e11-4667-9eee-27df06a43e5a@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "fire",
+    "Sprite": {
+      "__uuid__": "e5277a16-b8ca-4802-b199-7e63bf8505fe@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "water",
+    "Sprite": {
+      "__uuid__": "0d61aeca-d05f-433a-8570-f169a796873e@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "HeroToSprite",
+    "Id": "wind",
+    "Sprite": {
+      "__uuid__": "9f1a317f-3f12-48c9-9664-02f13f0527da@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -557,7 +754,6 @@
       "__id__": 0
     },
     "fileId": "a1dZUbothLqLy/ddCATEbA",
-    "instance": null,
     "targetOverrides": null
   }
 ]

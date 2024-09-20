@@ -1,8 +1,9 @@
 import { _decorator, Component } from 'cc';
 import { CurrencyView } from './views/CurrencyView';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { BuildingsSettings, MapBuildings } from './settings/Settings';
+import { BuildingSettings, BuildingsSettings, HeroesSettings, MapBuildings } from './settings/Settings';
 import buildingsJson from '../settings/buildings.json';
+import heroesJson from '../settings/heroes.json';
 
 const { ccclass, property } = _decorator;
 
@@ -19,6 +20,9 @@ export class TaskExercise extends Component
         this.currencyView.Bind(currencyVM.CurrencyObs);         // bind view to VM
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const heroesSettings: HeroesSettings = heroesJson;
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const buildingSettings: BuildingsSettings = buildingsJson;
         
         // create building based on settings
@@ -29,10 +33,11 @@ export class TaskExercise extends Component
             if(match != null)
             {
                 // create model with settings data
-                const buildingModel = new BuildingModel(building.id, building.name, building.description, building.cost, building.hireSlots);
+                const buildingModel = new BuildingModel(building, heroesSettings);
+                const buildingVM    = new BuildingViewModel(buildingModel, playerModel);
                 
                 // bind building view and vm
-                match.building.Bind(buildingModel.Name, buildingModel.Description); 
+                match.building.Bind(buildingVM); 
             }
         });
     }
@@ -61,18 +66,32 @@ class CurrencyViewModel
 
 class BuildingModel
 {
-    public Id:          string;
-    public Name:        string;
-    public Description: string;
-    public Cost:        number;
-    public HireSlots:   number;
-
-    constructor(id:string, name:string, desc:string, cost:number, hireSlots:number)
+    public BuildingSettings:        BehaviorSubject<BuildingSettings>;
+    public AvaiableHeroesSettings:  BehaviorSubject<HeroesSettings>;
+    
+    constructor(buildingSettings: BuildingSettings, heroesSettings:HeroesSettings)
     {
-        this.Id             = id;
-        this.Name           = name;
-        this.Description    = desc;
-        this.Cost           = cost;
-        this.HireSlots      = hireSlots;
+        this.BuildingSettings       = new BehaviorSubject<BuildingSettings>(buildingSettings);
+        this.AvaiableHeroesSettings = new BehaviorSubject<HeroesSettings>(heroesSettings);
+    }
+}
+
+export class BuildingViewModel
+{
+    public BuildingsObs:     Observable<BuildingSettings>;
+    public AvaiableHerosObs: Observable<HeroesSettings>;
+
+    playerModel: PlayerModel;
+
+    constructor(buildingModel: BuildingModel, playerModel:PlayerModel)
+    {
+        this.playerModel      = playerModel;
+        this.BuildingsObs     = buildingModel.BuildingSettings.asObservable();
+        this.AvaiableHerosObs = buildingModel.AvaiableHeroesSettings.asObservable();
+    }
+
+    public ValidateHireCost(cost:number): boolean
+    {
+        return this.playerModel.Currency.getValue() >= cost;
     }
 }
