@@ -14,7 +14,7 @@
   {
     "__type__": "cc.Node",
     "_name": "PlayerBase",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "__editorExtras__": {},
     "_parent": null,
     "_children": [
@@ -87,7 +87,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -972.368,
+      "y": -971.975,
       "z": 0
     },
     "_lrot": {
@@ -278,8 +278,8 @@
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": -23.851,
-      "y": -109.558,
+      "x": 2.769,
+      "y": -63.263,
       "z": 0
     }
   },
@@ -366,7 +366,6 @@
       "__id__": 0
     },
     "fileId": "c46/YsCPVOJYA4mWEpNYRx",
-    "instance": null,
     "targetOverrides": null,
     "nestedPrefabInstanceRoots": [
       {
