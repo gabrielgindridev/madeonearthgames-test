@@ -59,8 +59,13 @@ export class BuildingView extends Component
                 comp?.node.on(Node.EventType.MOUSE_DOWN, () => 
                     { this.HireSelected(comp, hero.cost, buildingVM.ValidateHireCost(hero.cost)); }, true);
 
-                this.HireBtn.node.on(Button.EventType.CLICK, 
-                    () => { if(comp?.highlight.enabledInHierarchy) buildingVM.Hire(hero); }, this);
+                this.HireBtn.node.on(Button.EventType.CLICK, () =>
+                {
+                    if (comp?.highlight.enabledInHierarchy) {
+                        buildingVM.Hire(hero);
+                        this.HireSelected(comp, hero.cost, buildingVM.ValidateHireCost(hero.cost));
+                    }
+                }, this);
             });
 
             this.AvailableHeroesParent.setPosition(new Vec3(0,0,0)); 
