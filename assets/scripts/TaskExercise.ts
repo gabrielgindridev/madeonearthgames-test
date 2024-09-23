@@ -7,6 +7,8 @@ import { BuildingViewModel } from './viewModels/BuildingViewModel';
 import { CurrencyViewModel } from './viewModels/CurrencyViewModel';
 import { PlayerModel } from './models/PlayerModel';
 import { BuildingModel } from './models/BuildingModel';
+import { SignpostView } from './views/SignpostView';
+import { SignpostViewModel } from './viewModels/SignpostViewModel';
 
 const { ccclass, property } = _decorator;
 
@@ -14,6 +16,7 @@ const { ccclass, property } = _decorator;
 export class TaskExercise extends Component 
 {
     @property({ type: CurrencyView })   public currencyView!:   CurrencyView;
+    @property({ type: SignpostView })   public signpostView!:   SignpostView;
     @property([MapBuildings])           public buildings:       MapBuildings[] = [];
 
     start() 
@@ -21,6 +24,9 @@ export class TaskExercise extends Component
         const playerModel = new PlayerModel(999999999);         // create player model and inject placeholder data
         const currencyVM  = new CurrencyViewModel(playerModel); // create currency VM and inject model
         this.currencyView.Bind(currencyVM.CurrencyObs);         // bind view to VM
+
+        const signpostVM  = new SignpostViewModel(playerModel); // create signpost VM and inject model
+        this.signpostView.Bind(signpostVM);                     // bind
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const heroesSettings: HeroesSettings = heroesJson;

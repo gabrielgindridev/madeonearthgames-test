@@ -17,13 +17,13 @@ export class BuildingModel
         this.Summoning              = new BehaviorSubject<Nullable<Hero>>(null);
 
         this.HeroesQueue.asObservable().subscribe(
-            (heroes) => { console.log("heroes observable -> " + heroes.map(h => h.name).join(', ')); }
+            (heroes) => { console.log("Heroes queue -> " + heroes.map(h => h.name).join(', ')); }
         )
     }
 
     public QueueHero(hero:Hero)
     {
-        console.log("QueueHero " + hero.name);
+        console.log("Hero queued: " + hero.name);
 
         const queue = this.HeroesQueue.getValue().concat(hero);
         this.HeroesQueue.next(queue);
@@ -35,7 +35,7 @@ export class BuildingModel
         this.Summoning.asObservable().pipe(first(), delay(hero.summonCooldown * 1000))
         .subscribe(
            () => {
-                console.log("Summoning finished for" + hero.name);
+                this.Summoning.next(hero);
                 const next = this.HeroesQueue.getValue().slice(1);
                 this.HeroesQueue.next(next);
 

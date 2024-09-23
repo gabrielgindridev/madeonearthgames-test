@@ -16,4 +16,9 @@ export class PlayerModel
     {
         this.Currency.next(this.Currency.getValue() - cost);
     }
+    
+    public SummonHero(hero:Hero)
+    {
+        this.Heroes.next(this.Heroes.getValue().concat(hero));
+    }
 }

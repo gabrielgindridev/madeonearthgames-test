@@ -21,9 +21,14 @@ export class BuildingViewModel
         this.AvaiableHerosObs = buildingModel.AvaiableHeroesSettings.asObservable();
         this.HerosQueueObs    = buildingModel.HeroesQueue.asObservable();
         
-        this.buildingModel.Summoning.asObservable().subscribe((v:Nullable<Hero>) => 
+        this.buildingModel.Summoning.asObservable().subscribe((hero:Nullable<Hero>) => 
         {
-            if(v != null) console.log("Summoned hero: " + v.name);
+            if(hero != null)
+            {
+                console.log("Summoned hero: " + hero.name);
+                this.playerModel.SummonHero(hero);
+            }
+
         });
     }
 
