@@ -60,7 +60,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 94
+      "__id__": 91
     },
     "_id": "8bec3b3f-67ea-482f-8f1b-f3001aba850b"
   },
@@ -1200,9 +1200,6 @@
       },
       {
         "__id__": 88
-      },
-      {
-        "__id__": 91
       }
     ],
     "nestedPrefabInstanceRoots": [
@@ -1412,7 +1409,7 @@
       "__id__": 74
     },
     "propertyPath": [
-      "buildingTrans"
+      "uiTransform"
     ],
     "target": {
       "__id__": 36
@@ -1442,7 +1439,7 @@
       "__id__": 77
     },
     "propertyPath": [
-      "closeTrans"
+      "closeTransform"
     ],
     "target": {
       "__id__": 36
@@ -1532,7 +1529,7 @@
       "__id__": 86
     },
     "propertyPath": [
-      "HireBtn"
+      "SummonUI"
     ],
     "target": {
       "__id__": 36
@@ -1550,7 +1547,7 @@
   {
     "__type__": "cc.TargetInfo",
     "localID": [
-      "5dnYhkQa1Hk5OrbUiqStIn"
+      "bdKy8jZL9DqYY+p6j/KCXo"
     ]
   },
   {
@@ -1562,7 +1559,7 @@
       "__id__": 89
     },
     "propertyPath": [
-      "AvailableHeroesParent"
+      "HireUI"
     ],
     "target": {
       "__id__": 36
@@ -1580,64 +1577,34 @@
   {
     "__type__": "cc.TargetInfo",
     "localID": [
-      "66HVe+5Z1L3ZKCbbSk74+q"
-    ]
-  },
-  {
-    "__type__": "cc.TargetOverrideInfo",
-    "source": {
-      "__id__": 36
-    },
-    "sourceInfo": {
-      "__id__": 92
-    },
-    "propertyPath": [
-      "SummonUI"
-    ],
-    "target": {
-      "__id__": 36
-    },
-    "targetInfo": {
-      "__id__": 93
-    }
-  },
-  {
-    "__type__": "cc.TargetInfo",
-    "localID": [
-      "b2sLUAkb1CRaUiY/Um/Vcj"
-    ]
-  },
-  {
-    "__type__": "cc.TargetInfo",
-    "localID": [
-      "bdKy8jZL9DqYY+p6j/KCXo"
+      "71yNk41/RDV4VZUjm1j8oU"
     ]
   },
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 95
+      "__id__": 92
     },
     "shadows": {
-      "__id__": 96
+      "__id__": 93
     },
     "_skybox": {
-      "__id__": 97
+      "__id__": 94
     },
     "fog": {
-      "__id__": 98
+      "__id__": 95
     },
     "octree": {
-      "__id__": 99
+      "__id__": 96
     },
     "skin": {
-      "__id__": 100
+      "__id__": 97
     },
     "lightProbeInfo": {
-      "__id__": 101
+      "__id__": 98
     },
     "postSettings": {
-      "__id__": 102
+      "__id__": 99
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false

@@ -1,30 +1,26 @@
-import { _decorator, Button, Component, instantiate, Label, Node, Prefab, Tween, tween, TweenEasing, UITransform, Vec3 } from 'cc';
-import { HeroUI } from '../ui/HeroUI';
-import { HireButton } from '../ui/HireButton';
+import { _decorator, Component, Label, Node, Tween, tween, TweenEasing, UITransform, Vec3 } from 'cc';
 import { BuildingViewModel } from '../viewModels/BuildingViewModel';
 import { SummonQueueUI } from '../ui/SummonQueueUI';
+import { HireHeroesUI } from '../ui/HireHeroesUI';
 const { ccclass, property } = _decorator;
 
 @ccclass('BuildingView')
 export class BuildingView extends Component 
 {
-    @property({ type: Node })           public base!:                   Node;
-    @property({ type: UITransform })    public uiTransform!:            UITransform;
-    @property({ type: UITransform })    public closeTransform!:         UITransform;
-    @property({ type: Label })          public titleLabel!:             Label;
-    @property({ type: Label })          public descrLabel!:             Label;
-    @property({ type: HireButton })     public HireBtn!:                HireButton;
+    @property({ type: Node })           public base!:               Node;           // building base
+    @property({ type: UITransform })    public uiTransform!:        UITransform;    // ui root
+    @property({ type: UITransform })    public closeTransform!:     UITransform;    // area to hide ui
+    @property({ type: Label })          public titleLabel!:         Label;
+    @property({ type: Label })          public descrLabel!:         Label;
 
-    @property({ type: Node })           public AvailableHeroesParent!:  Node;
-    @property({ type: Prefab })         public AvailableHeroesPrefab!:  Prefab;
-    @property([HeroUI])                 public AviableHeroes:           HeroUI[] = [];
-
-    @property({ type: SummonQueueUI })  public SummonUI!: SummonQueueUI;
+    @property({ type: SummonQueueUI })  public SummonUI!:   SummonQueueUI;
+    @property({ type: HireHeroesUI })   public HireUI!:     HireHeroesUI;
 
 
     start() 
     {
-        this.uiTransform.node.position = new Vec3(0, -this.uiTransform.height, 0);
+        // start ui hidden
+        this.uiTransform.node.position = new Vec3(0, -this.uiTransform.height, 0);      
         this.node.active = false;
     }
 
@@ -36,48 +32,15 @@ export class BuildingView extends Component
             this.SummonUI.Initialize(build.hireSlots);
         });
 
-        buildingVM.AvaiableHerosObs.subscribe(heroes => 
-        {
-            heroes.heroes.forEach(hero =>
-            {
-                const prefab = instantiate(this.AvailableHeroesPrefab);
-                prefab.parent = this.AvailableHeroesParent;
-                const comp = prefab.getComponent(HeroUI);
-                comp!.Initialize(hero.id, hero.rank, hero.type);
-                this.AviableHeroes.push(comp!);
-                comp?.node.on(Node.EventType.MOUSE_DOWN, () => 
-                    { this.HireSelected(comp, hero.cost, buildingVM.ValidateHireCost(hero.cost)); }, true);
-
-                this.HireBtn.node.on(Button.EventType.CLICK, () =>
-                {
-                    if (comp?.highlight.enabledInHierarchy) {
-                        buildingVM.Hire(hero);
-                        this.HireSelected(comp, hero.cost, buildingVM.ValidateHireCost(hero.cost));
-                    }
-                }, this);
-            });
+        buildingVM.AvaiableHerosObs.subscribe(heroes => {
+            this.HireUI.Initialize(heroes.heroes, h => { return buildingVM.ValidateHireCost(h.cost)}, h => { buildingVM.Hire(h)});
         });
 
-        buildingVM.HerosQueueObs.subscribe(queue =>
-        {
+        buildingVM.HerosQueueObs.subscribe(queue => {
             this.SummonUI.UpdateSlots(queue);
         });
 
         this.base.on(Node.EventType.MOUSE_DOWN, () => { this.show(); }, this);
-    }
-
-    HireSelected(selected: HeroUI, cost:number, valid:boolean)
-    {
-        selected.highlight.node.active = true;
-        this.HireBtn.UpdateCost(cost, valid);
-
-        this.AviableHeroes.filter(h => h != selected)
-        .forEach(h => { h.highlight.node.active = false; });
-    }
-
-    Hire()
-    {
-        console.log("hire");
     }
 
     show()
