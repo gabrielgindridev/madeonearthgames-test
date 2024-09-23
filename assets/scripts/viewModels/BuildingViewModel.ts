@@ -26,12 +26,7 @@ export class BuildingViewModel
         
         this.buildingModel.Summoning.asObservable().subscribe((hero:Nullable<Hero>) => 
         {
-            if(hero != null)
-            {
-                console.log("Summoned hero: " + hero.name);
-                this.playerModel.SummonHero(hero);
-            }
-
+            if(hero != null) this.playerModel.SummonHero(hero);
         });
     }
 

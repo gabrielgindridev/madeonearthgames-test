@@ -2,6 +2,7 @@ import { _decorator, Component, Label, Node, Sprite, Tween, tween, TweenEasing, 
 import { BuildingViewModel } from '../viewModels/BuildingViewModel';
 import { SummonQueueUI } from '../ui/SummonQueueUI';
 import { HireHeroesUI } from '../ui/HireHeroesUI';
+import { combineLatestWith } from 'rxjs';
 const { ccclass, property } = _decorator;
 
 @ccclass('BuildingView')
@@ -15,6 +16,7 @@ export class BuildingView extends Component
     @property({ type: Label })          public titleLabel!:         Label;
     @property({ type: Label })          public descrLabel!:         Label;
 
+    // view components
     @property({ type: SummonQueueUI })  public SummonUI!:   SummonQueueUI;
     @property({ type: HireHeroesUI })   public HireUI!:     HireHeroesUI;
 
@@ -29,24 +31,32 @@ export class BuildingView extends Component
 
     public Bind(buildingVM: BuildingViewModel) 
     {
-        buildingVM.Visibility.Visible.asObservable().subscribe(v =>{ this.setVisible(v); });
+        buildingVM.Visibility.Visible.asObservable().subscribe(v =>{ this.setVisible(v); }); // update visibility
 
+        // initialize summon slots
         buildingVM.BuildingsObs.subscribe(build => {
             this.titleLabel.string = build.name;
             this.descrLabel.string = build.description;
             this.SummonUI.Initialize(build.hireSlots);
         });
 
+        // initialize available hire heroes
         buildingVM.AvaiableHerosObs.subscribe(heroes => {
-            this.HireUI.Initialize(heroes.heroes, h => { return buildingVM.ValidateHireCost(h.cost)}, h => { buildingVM.Hire(h)});
+            this.HireUI.Initialize(heroes.heroes, h => { buildingVM.Hire(h)});
         });
 
-        buildingVM.HerosQueueObs.subscribe(queue => {
+        // update hero summon queue slots and validate
+        buildingVM.HerosQueueObs.pipe(combineLatestWith(this.HireUI.selectedHero.asObservable()))
+        .subscribe(v => {
+            const queue = v[0];
             this.SummonUI.UpdateSlots(queue);
-            this.baseQueueWarning.enabled = queue.length > 0; 
+            this.baseQueueWarning.enabled = queue.length > 0;
+            this.HireUI.UpdateValidation(v[1].cost, buildingVM.ValidateHireCost(v[1].cost));
         });
 
         this.base.on(Node.EventType.MOUSE_DOWN, () => { this.show(); }, this);
+
+        this.HireUI.selectedHero.asObservable().subscribe(h => { this.HireUI.UpdateValidation(h.cost, buildingVM.ValidateHireCost(h.cost)); });
     }
 
     setVisible(value: boolean)
