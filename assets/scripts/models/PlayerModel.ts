@@ -1,15 +1,15 @@
 import { BehaviorSubject } from 'rxjs';
-import { Hero } from '../settings/Settings';
+import { Hero, PlayerSettings } from '../settings/Settings';
 
 export class PlayerModel 
 {
-    public Currency: BehaviorSubject<number>;
-    public Heroes:   BehaviorSubject<Hero[]>;
+    public Currency:    BehaviorSubject<number>;
+    public Heroes:      BehaviorSubject<Hero[]>;
 
-    constructor(currency: number) 
+    constructor(settings: PlayerSettings) 
     {
-        this.Currency = new BehaviorSubject<number>(currency);
-        this.Heroes   = new BehaviorSubject<Hero[]>([]);
+        this.Currency = new BehaviorSubject<number>(settings.state.currency);
+        this.Heroes   = new BehaviorSubject<Hero[]>(settings.state.heroes);
     }
 
     public Consume(cost:number)

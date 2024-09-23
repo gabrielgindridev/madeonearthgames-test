@@ -42,3 +42,17 @@ export class Hero
     @property public type           = '';
     @property public rank           = '';
 }
+
+@ccclass('PlayerSettings')
+export class PlayerSettings 
+{
+    public state = new PlayerState();
+}
+
+@ccclass('PlayerState')
+export class PlayerState 
+{
+    public currency = 0;
+    public buildings: string[] = [];
+    heroes: Hero[] = [];
+}
