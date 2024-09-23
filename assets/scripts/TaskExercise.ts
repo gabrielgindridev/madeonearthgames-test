@@ -45,6 +45,9 @@ export class TaskExercise extends Component
                 const buildingModel = new BuildingModel(building, heroesSettings);
                 const buildingVM    = new BuildingViewModel(buildingModel, playerModel);
                 
+                // acting as mediator between VMs
+                signpostVM.Visibility.Visible.asObservable().subscribe(v => { if(v) buildingVM.Visibility.Visible.next(false)}); 
+                
                 // bind building view and vm
                 match.building.Bind(buildingVM); 
             }

@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "b6352298-6bfe-4f5c-80b6-2a302a50987c",
+  "uuid": "2f315867-79b9-4355-ac67-1c802708e7c7",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "HUDSignpost"
+    "syncNodeName": "HeroInfo"
   }
 }

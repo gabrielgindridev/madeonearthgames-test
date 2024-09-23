@@ -29,6 +29,8 @@ export class BuildingView extends Component
 
     public Bind(buildingVM: BuildingViewModel) 
     {
+        buildingVM.Visibility.Visible.asObservable().subscribe(v =>{ this.setVisible(v); });
+
         buildingVM.BuildingsObs.subscribe(build => {
             this.titleLabel.string = build.name;
             this.descrLabel.string = build.description;
@@ -45,6 +47,12 @@ export class BuildingView extends Component
         });
 
         this.base.on(Node.EventType.MOUSE_DOWN, () => { this.show(); }, this);
+    }
+
+    setVisible(value: boolean)
+    {
+        if(value) this.show();
+        else      this.hide();
     }
 
     show()

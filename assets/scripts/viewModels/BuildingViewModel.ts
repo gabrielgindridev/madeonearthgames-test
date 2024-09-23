@@ -3,12 +3,15 @@ import { BuildingSettings, Hero, HeroesSettings } from '../settings/Settings';
 import { Nullable } from '../utils/Nullable';
 import { BuildingModel } from '../models/BuildingModel';
 import { PlayerModel } from '../models/PlayerModel';
+import { Visibility } from './Visibility';
 
 export class BuildingViewModel
 {
     public BuildingsObs:     Observable<BuildingSettings>;
     public AvaiableHerosObs: Observable<HeroesSettings>;
     public HerosQueueObs:    Observable<Hero[]>;
+    
+    public Visibility = new Visibility();
 
     playerModel: PlayerModel;
     buildingModel: BuildingModel;
