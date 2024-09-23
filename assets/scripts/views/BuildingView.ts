@@ -1,17 +1,16 @@
 import { _decorator, Button, Component, instantiate, Label, Node, Prefab, Tween, tween, TweenEasing, UITransform, Vec3 } from 'cc';
-import { range } from 'rxjs';
 import { HeroUI } from '../ui/HeroUI';
 import { HireButton } from '../ui/HireButton';
 import { BuildingViewModel } from '../viewModels/BuildingViewModel';
-import { Hero } from '../settings/Settings';
+import { SummonQueueUI } from '../ui/SummonQueueUI';
 const { ccclass, property } = _decorator;
 
 @ccclass('BuildingView')
 export class BuildingView extends Component 
 {
-    @property({ type: Node })           public building!:               Node;
-    @property({ type: UITransform })    public buildingTrans!:          UITransform;
-    @property({ type: UITransform })    public closeTrans!:             UITransform;
+    @property({ type: Node })           public base!:                   Node;
+    @property({ type: UITransform })    public uiTransform!:            UITransform;
+    @property({ type: UITransform })    public closeTransform!:         UITransform;
     @property({ type: Label })          public titleLabel!:             Label;
     @property({ type: Label })          public descrLabel!:             Label;
     @property({ type: HireButton })     public HireBtn!:                HireButton;
@@ -20,14 +19,12 @@ export class BuildingView extends Component
     @property({ type: Prefab })         public AvailableHeroesPrefab!:  Prefab;
     @property([HeroUI])                 public AviableHeroes:           HeroUI[] = [];
 
-    @property({ type: Node })           public SummonHeroesParent!: Node;
-    @property({ type: Prefab })         public SummonHeroesPrefab!: Prefab;
-    @property([HeroUI])                 public SummonHeroes:        HeroUI[] = [];
+    @property({ type: SummonQueueUI })  public SummonUI!: SummonQueueUI;
 
 
     start() 
     {
-        this.buildingTrans.node.position = new Vec3(0, -this.buildingTrans.height, 0);
+        this.uiTransform.node.position = new Vec3(0, -this.uiTransform.height, 0);
         this.node.active = false;
     }
 
@@ -36,15 +33,7 @@ export class BuildingView extends Component
         buildingVM.BuildingsObs.subscribe(build => {
             this.titleLabel.string = build.name;
             this.descrLabel.string = build.description;
-            
-            range(1, build.hireSlots).subscribe({
-                next: v => {
-                    const prefab = instantiate(this.SummonHeroesPrefab);
-                    prefab.parent = this.SummonHeroesParent;
-                    const comp = prefab.getComponent(HeroUI);
-                    this.SummonHeroes.push(comp!);
-                }
-            });
+            this.SummonUI.Initialize(build.hireSlots);
         });
 
         buildingVM.AvaiableHerosObs.subscribe(heroes => 
@@ -67,33 +56,14 @@ export class BuildingView extends Component
                     }
                 }, this);
             });
-
-            this.AvailableHeroesParent.setPosition(new Vec3(0,0,0)); 
         });
-
-        let playing = false;
 
         buildingVM.HerosQueueObs.subscribe(queue =>
         {
-            this.SummonHeroes.map((h, i) => [h, queue[i]] as [HeroUI, Hero]).forEach(v => {
-                if(v[1] != null) v[0].Initialize(v[1].id, v[1].rank, v[1].type, true);
-                else             v[0].Reset();
-            });
-
-            if(queue.length > 0 && !playing) 
-            {
-                playing = true;
-
-                const progress = new NumberTarget();
-                tween(progress).to(queue[0].summonCooldown - 0.1, {number: 1},
-                {
-                    onUpdate: (target:NumberTarget) => {this.SummonHeroes[0].bar.progress = 1 - target.number; },
-                    onComplete: () => { playing = false;  console.log("finished -> " + queue[0].name) }
-                }).start();
-            }
+            this.SummonUI.UpdateSlots(queue);
         });
 
-        this.building.on(Node.EventType.MOUSE_DOWN, () => { this.show(); }, this);
+        this.base.on(Node.EventType.MOUSE_DOWN, () => { this.show(); }, this);
     }
 
     HireSelected(selected: HeroUI, cost:number, valid:boolean)
@@ -114,27 +84,23 @@ export class BuildingView extends Component
     {
         this.node.active = true;
         this.slideTween(0, "quadIn");
-        this.closeTrans.node.once(Node.EventType.MOUSE_DOWN, () => { this.hide(); }, this.closeTrans.node, false);
+        this.closeTransform.node.once(Node.EventType.MOUSE_DOWN, () => { this.hide(); }, this.closeTransform.node, false);
     }
 
     hide()
     {
-        this.slideTween(-this.buildingTrans.height, "backOut", () => { this.node.active = false; });
+        this.slideTween(-this.uiTransform.height, "backOut", () => { this.node.active = false; });
     }
 
     slideTween(height: number, easing: TweenEasing, complete?: () => void)
     {
-        Tween.stopAllByTarget(this.buildingTrans.node.position);
+        Tween.stopAllByTarget(this.uiTransform.node.position);
 
-        tween(this.buildingTrans.node.position).to(0.25, new Vec3(0, height, 0), 
+        tween(this.uiTransform.node.position).to(0.25, new Vec3(0, height, 0), 
         {
             easing: easing,
-            onUpdate: (target:Vec3) => {this.buildingTrans.node.position = target; },
+            onUpdate: (target) => {this.uiTransform.node.position = target as Vec3; },
             onComplete: () => { complete?.(); }
         }).start();
     }
-}
-
-class NumberTarget {
-    number = 0;
 }
