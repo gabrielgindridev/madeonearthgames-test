@@ -28,11 +28,11 @@ export class BuildingSettings
 @ccclass('HeroesSettings')
 export class HeroesSettings 
 {
-    public heroes: HeroSettings[] = [];
+    public heroes: Hero[] = [];
 }
 
 @ccclass('HeroSettings') 
-export class HeroSettings 
+export class Hero 
 {
     @property public id             = '';
     @property public name           = '';

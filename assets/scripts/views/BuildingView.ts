@@ -1,8 +1,9 @@
-import { _decorator, Component, instantiate, Label, Node, Prefab, Tween, tween, TweenEasing, UITransform, Vec3 } from 'cc';
+import { _decorator, Button, Component, instantiate, Label, Node, Prefab, Tween, tween, TweenEasing, UITransform, Vec3 } from 'cc';
 import { range } from 'rxjs';
-import { AvailableHero } from '../ui/AvailableHero';
+import { HeroUI } from '../ui/HeroUI';
 import { HireButton } from '../ui/HireButton';
-import { BuildingViewModel } from '../TaskExercise';
+import { BuildingViewModel } from '../viewModels/BuildingViewModel';
+import { Hero } from '../settings/Settings';
 const { ccclass, property } = _decorator;
 
 @ccclass('BuildingView')
@@ -13,16 +14,15 @@ export class BuildingView extends Component
     @property({ type: UITransform })    public closeTrans!:             UITransform;
     @property({ type: Label })          public titleLabel!:             Label;
     @property({ type: Label })          public descrLabel!:             Label;
+    @property({ type: HireButton })     public HireBtn!:                HireButton;
 
     @property({ type: Node })           public AvailableHeroesParent!:  Node;
     @property({ type: Prefab })         public AvailableHeroesPrefab!:  Prefab;
-    @property([AvailableHero])          public AviableHeroes: AvailableHero[] = [];
+    @property([HeroUI])                 public AviableHeroes:           HeroUI[] = [];
 
-    @property({ type: Node })           public SummonHeroesParent!:  Node;
-    @property({ type: Prefab })         public SummonHeroesPrefab!:  Prefab;
-    @property([AvailableHero])          public SummonHeroes: AvailableHero[] = [];
-
-    @property({ type: HireButton })     public HireBtn!: HireButton;
+    @property({ type: Node })           public SummonHeroesParent!: Node;
+    @property({ type: Prefab })         public SummonHeroesPrefab!: Prefab;
+    @property([HeroUI])                 public SummonHeroes:        HeroUI[] = [];
 
 
     start() 
@@ -41,7 +41,7 @@ export class BuildingView extends Component
                 next: v => {
                     const prefab = instantiate(this.SummonHeroesPrefab);
                     prefab.parent = this.SummonHeroesParent;
-                    const comp = prefab.getComponent(AvailableHero);
+                    const comp = prefab.getComponent(HeroUI);
                     this.SummonHeroes.push(comp!);
                 }
             });
@@ -53,27 +53,56 @@ export class BuildingView extends Component
             {
                 const prefab = instantiate(this.AvailableHeroesPrefab);
                 prefab.parent = this.AvailableHeroesParent;
-                const comp = prefab.getComponent(AvailableHero);
+                const comp = prefab.getComponent(HeroUI);
                 comp!.Initialize(hero.id, hero.rank, hero.type);
                 this.AviableHeroes.push(comp!);
                 comp?.node.on(Node.EventType.MOUSE_DOWN, () => 
                     { this.HireSelected(comp, hero.cost, buildingVM.ValidateHireCost(hero.cost)); }, true);
 
+                this.HireBtn.node.on(Button.EventType.CLICK, 
+                    () => { if(comp?.highlight.enabledInHierarchy) buildingVM.Hire(hero); }, this);
             });
 
             this.AvailableHeroesParent.setPosition(new Vec3(0,0,0)); 
         });
 
+        let playing = false;
+
+        buildingVM.HerosQueueObs.subscribe(queue =>
+        {
+            this.SummonHeroes.map((h, i) => [h, queue[i]] as [HeroUI, Hero]).forEach(v => {
+                if(v[1] != null) v[0].Initialize(v[1].id, v[1].rank, v[1].type, true);
+                else             v[0].Reset();
+            });
+
+            if(queue.length > 0 && !playing) 
+            {
+                playing = true;
+
+                const progress = new NumberTarget();
+                tween(progress).to(queue[0].summonCooldown - 0.1, {number: 1},
+                {
+                    onUpdate: (target:NumberTarget) => {this.SummonHeroes[0].bar.progress = 1 - target.number; },
+                    onComplete: () => { playing = false;  console.log("finished -> " + queue[0].name) }
+                }).start();
+            }
+        });
+
         this.building.on(Node.EventType.MOUSE_DOWN, () => { this.show(); }, this);
     }
 
-    HireSelected(selected: AvailableHero, cost:number, valid:boolean)
+    HireSelected(selected: HeroUI, cost:number, valid:boolean)
     {
         selected.highlight.node.active = true;
         this.HireBtn.UpdateCost(cost, valid);
 
         this.AviableHeroes.filter(h => h != selected)
         .forEach(h => { h.highlight.node.active = false; });
+    }
+
+    Hire()
+    {
+        console.log("hire");
     }
 
     show()
@@ -99,4 +128,8 @@ export class BuildingView extends Component
             onComplete: () => { complete?.(); }
         }).start();
     }
+}
+
+class NumberTarget {
+    number = 0;
 }
