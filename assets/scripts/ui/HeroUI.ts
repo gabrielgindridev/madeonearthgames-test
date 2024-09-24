@@ -15,7 +15,7 @@ export class HeroUI extends Component
     @property({ type: Sprite })         public rank!:       Sprite;
     @property({ type: Sprite })         public element!:    Sprite;
     @property({ type: Sprite })         public highlight!:  Sprite;
-    @property({ type: ProgressBar })    public bar!:        ProgressBar;
+    @property({ type: ProgressBar })    public bar?:        ProgressBar;
 
     @property([HeroToSprite]) public HeroSprites: HeroToSprite[]      = [];
     @property([HeroToSprite]) public RankSprites: HeroToSprite[]      = [];
@@ -26,7 +26,7 @@ export class HeroUI extends Component
         this.hero.spriteFrame       = this.HeroSprites.find(info => info.Id == hero)!.Sprite;
         this.rank.spriteFrame       = this.RankSprites.find(info => info.Id == rank)!.Sprite;
         this.element.spriteFrame    = this.ElementSprites.find(info => info.Id == element)!.Sprite;
-        if(bar) this.bar.progress   = 1;
+        if(bar) this.bar!.progress  = 1;
     }
 
     public Reset()

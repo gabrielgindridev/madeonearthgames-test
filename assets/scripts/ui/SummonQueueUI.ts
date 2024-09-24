@@ -37,8 +37,8 @@ export class SummonQueueUI extends Component {
 
             tween(this.SummonHeroes[0].bar).to(queue[0].summonCooldown - 0.1, {progress: 0},
             {
-                onStart: () => this.SummonHeroes[0].bar.progress = 1,
-                onComplete: () => { this.inProgress = false;  console.log("finished -> " + queue[0].name) }
+                onStart: () => this.SummonHeroes[0].bar!.progress = 1,
+                onComplete: () => { this.inProgress = false; }
             }).start();
         }
     }

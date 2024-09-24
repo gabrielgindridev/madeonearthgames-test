@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
 import { BuildingSettings, Hero, HeroesSettings } from '../settings/Settings';
-import { Nullable } from '../utils/Nullable';
 import { BuildingModel } from '../models/BuildingModel';
 import { PlayerModel } from '../models/PlayerModel';
 import { Visibility } from './Visibility';
@@ -24,10 +23,8 @@ export class BuildingViewModel
         this.AvaiableHerosObs = buildingModel.AvaiableHeroesSettings.asObservable();
         this.HerosQueueObs    = buildingModel.HeroesQueue.asObservable();
         
-        this.buildingModel.Summoning.asObservable().subscribe((hero:Nullable<Hero>) => 
-        {
-            if(hero != null) this.playerModel.SummonHero(hero);
-        });
+        // update summoned heroes
+        this.buildingModel.Summoning.asObservable().subscribe(hero => { if(hero != null) this.playerModel.SummonHero(hero); });
     }
 
     public ValidateHireCost(cost:number): boolean

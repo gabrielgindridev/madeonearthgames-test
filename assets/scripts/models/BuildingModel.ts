@@ -15,16 +15,10 @@ export class BuildingModel
         this.AvaiableHeroesSettings = new BehaviorSubject<HeroesSettings>(heroesSettings);
         this.HeroesQueue            = new BehaviorSubject<Hero[]>([]);
         this.Summoning              = new BehaviorSubject<Nullable<Hero>>(null);
-
-        this.HeroesQueue.asObservable().subscribe(
-            (heroes) => { console.log("Heroes queue -> " + heroes.map(h => h.name).join(', ')); }
-        )
     }
 
     public QueueHero(hero:Hero)
     {
-        console.log("Hero queued: " + hero.name);
-
         const queue = this.HeroesQueue.getValue().concat(hero);
         this.HeroesQueue.next(queue);
         if(queue.length == 1) this.Summon(hero);

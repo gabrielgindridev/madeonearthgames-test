@@ -11,7 +11,7 @@ export class CurrencyView extends Component {
 
     public Bind(currencyObs: Observable<number>) 
     {
-        // bind text to property. Probably should bind to context and avoid manual bind
+        // update currency text and spawn effect
         currencyObs.subscribe(v => {
             this.label.string = v.toString();
 
